@@ -14,3 +14,10 @@
   justify-content: center;
   gap: 24px;
 }
+.modal {
+  width: 1112px;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

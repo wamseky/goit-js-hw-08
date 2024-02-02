@@ -64,12 +64,13 @@ const images = [
   },
 ];
 
-const list = document.querySelector(".gallery");
-// const instance = basicLightbox.create(document.querySelector(".gallery"));
+const listEl = document.querySelector(".gallery");
+let instance;
 
-
-function createCardMarcup({preview, original, description}) {
-    const markup = `<li class="gallery-item">
+function createCardMarkup(arr) {
+  return arr
+    .map(
+      ({ preview, original, description }) => `<li class="gallery-item">
                       <a class="gallery-link" href="">
                          <img
                          class="gallery-image"
@@ -78,31 +79,33 @@ function createCardMarcup({preview, original, description}) {
                          alt="${description}"
                         />
                      </a>
-                    </li>`;
-  return markup;
-};
-let markup = "";
-for (let img of images) {
-    markup += createCardMarcup(img)
-};
-list.innerHTML = markup;
+                    </li>`
+    )
+    .join("");
+}
 
-const items = list.querySelectorAll(".gallery-item");
+listEl.innerHTML = createCardMarkup(images);
+listEl.addEventListener("click", onClick);
 
-items.forEach((item) => {
-    item.addEventListener('click', (event) => {
-        const source = event.currentTarget.original;
-        console.log(source);
-    });
+function onClick(evt) {
+  evt.preventDefault();
+  if (evt.target.nodeName !== "UL") {
+    console.log(evt.target);
+
+    instance = basicLightbox.create(
+      `<div class="modal">
+          <img src="${evt.target.getAttribute(
+            "data-source"
+          )}" alt="${evt.target.getAttribute("alt")}
+          width="1112" height="640">
+        </div>`
+    );
+    instance.show();
+  }
+}
+
+document.addEventListener("keyup", ({ code }) => {
+  if (code === "Escape") {
+    instance.close();
+  }
 });
-// list.addEventListener('click', (event) => {
-//    console.log(event)
-// })
-
-
-// list.addEventListener("click", selectGallery);
-// function selectGallery(event) {
-//   if (event.target.nodeName !== "BUTTON") {
-//     return;
-//   }
-// }
