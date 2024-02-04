@@ -71,7 +71,7 @@ function createCardMarkup(arr) {
   return arr
     .map(
       ({ preview, original, description }) => `<li class="gallery-item">
-                      <a class="gallery-link" href="">
+                      <a class="gallery-link" href="${original}">
                          <img
                          class="gallery-image"
                          src="${preview}"
@@ -89,7 +89,7 @@ listEl.addEventListener("click", onClick);
 
 function onClick(evt) {
   evt.preventDefault();
-  if (evt.target.nodeName !== "UL") {
+  if (evt.target.nodeName === "IMG") {
     console.log(evt.target);
 
     instance = basicLightbox.create(
@@ -102,10 +102,9 @@ function onClick(evt) {
     );
     instance.show();
   }
+  document.addEventListener("keyup", ({ code }) => {
+    if (code === "Escape") {
+      instance.close();
+    }
+  });
 }
-
-document.addEventListener("keyup", ({ code }) => {
-  if (code === "Escape") {
-    instance.close();
-  }
-});
