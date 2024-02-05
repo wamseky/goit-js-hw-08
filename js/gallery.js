@@ -102,9 +102,11 @@ function onClick(evt) {
     );
     instance.show();
   }
-  document.addEventListener("keyup", ({ code }) => {
-    if (code === "Escape") {
+  document.addEventListener('keydown', onEscClick);
+  function onEscClick({ code }) {
+    if (code === 'Escape') {
       instance.close();
+      document.removeEventListener('keydown', onEscClick);
     }
-  });
+  }
 }
